@@ -21,7 +21,7 @@ type Store = GameState & {
   chooseHero: (id: HeroId) => void;
   startKid: (id: HeroId) => void;
   startListen: () => void;
-  startCine: () => void;
+  startCine: (focus?: string) => void;
   startBing: () => void;
   goNav: (dest: NavDest) => void;
   toggleCine: () => void;
@@ -82,6 +82,7 @@ const idleListen = {
   cineOver: false,
   cineTheme: "dream" as const,
   cineEvent: 0,
+  cinePicked: "freppy",
 };
 
 export const useGame = create<Store>((set, get) => ({
@@ -106,7 +107,12 @@ export const useGame = create<Store>((set, get) => ({
       },
     }),
 
-  startCine: () => set({ screen: "cine", cineOver: true }),
+  startCine: (focus) =>
+    set({
+      screen: "cine",
+      cineOver: true,
+      cinePicked: focus || "freppy",
+    }),
 
   startBing: () => set({ screen: "bing" }),
 
