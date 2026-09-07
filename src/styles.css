@@ -1,5 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap");
 @import "tailwindcss";
+@source "./**/*.{ts,tsx}";
+@source "../pages-src/**/*.{ts,tsx}";
 
 @theme {
   --font-display: "Cinzel", ui-serif, Georgia, serif;
@@ -44,7 +45,8 @@
 
   html,
   body,
-  #app {
+  #app,
+  #root {
     min-height: 100%;
     background: var(--color-night);
     color: var(--color-ink);
