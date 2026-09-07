@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Clover, Crown, Music, ScrollText } from "lucide-react";
+import { Clover, Music, ScrollText } from "lucide-react";
 import { sfx, unlockAudio } from "@/game/audio";
+import { SEATS, TONE_RING, TONE_TEXT, seatDef } from "@/game/seats";
 import { useGame } from "@/game/store";
 import { cn } from "@/lib/utils";
+import { SeatCard } from "./SeatCard";
 import { SiteNav } from "./SiteNav";
 
 const THEMES = [
@@ -32,29 +34,31 @@ const EVENTS = [
 ];
 
 const PIECES = [
-  { id: "freppy", src: "/art/freppy.jpg", x: 50, y: 46 },
-  { id: "princess", src: "/art/princess.jpg", x: 48, y: 62 },
-  { id: "knight", src: "/art/knight.jpg", x: 64, y: 38 },
-  { id: "sae", src: "/art/sae.jpg", x: 34, y: 40 },
-  { id: "steven", src: "/art/steven.jpg", x: 72, y: 58 },
-  { id: "lint", src: "/art/lint.jpg", x: 28, y: 62 },
+  { id: "freppy", x: 50, y: 46 },
+  { id: "princess", x: 48, y: 62 },
+  { id: "knight", x: 64, y: 38 },
+  { id: "sae", x: 34, y: 40 },
+  { id: "steven", x: 72, y: 58 },
+  { id: "lint", x: 28, y: 62 },
 ];
 
 export function CineBoard() {
   const startListen = useGame((s) => s.startListen);
   const goNav = useGame((s) => s.goNav);
+  const cinePicked = useGame((s) => s.cinePicked);
   const [theme, setTheme] = useState<(typeof THEMES)[number]["id"]>("cozy");
   const [eventI, setEventI] = useState(0);
   const [farewell, setFarewell] = useState(false);
-  const [picked, setPicked] = useState<string | null>("freppy");
+  const [picked, setPicked] = useState<string>(cinePicked || "freppy");
   const skin = THEMES.find((t) => t.id === theme) ?? THEMES[4];
   const ev = EVENTS[eventI]!;
+  const seat = seatDef(picked) ?? SEATS[0]!;
 
   return (
     <div className="flex min-h-dvh flex-col bg-night text-ink">
       <header className="flex items-center justify-between gap-3 px-3 pt-[max(10px,env(safe-area-inset-top))] pb-2 sm:px-6">
-        <p className="font-display text-[11px] tracking-[0.28em] text-gold uppercase">
-          Freppy · green player
+        <p className={cn("font-display text-[11px] tracking-[0.28em] uppercase", TONE_TEXT[seat.tone])}>
+          {seat.name} · {seat.role}
         </p>
         <button
           type="button"
@@ -93,59 +97,44 @@ export function CineBoard() {
 
       <div className="mx-auto grid w-full max-w-6xl flex-1 gap-3 px-3 pb-nav lg:grid-cols-[1fr_16rem]">
         <section className="space-y-3">
-          {picked === "freppy" && (
-            <div className="flex items-center gap-3 rounded-[20px] border border-mint/40 bg-night-2 p-3 anim-pop">
-              <img
-                src="/art/freppy.jpg"
-                alt="Freppy"
-                className="size-[5.5rem] shrink-0 rounded-[16px] object-cover ring-2 ring-mint/70 sm:size-24"
-              />
-              <div className="min-w-0">
-                <p className="font-display text-[10px] tracking-[0.22em] text-mint uppercase">
-                  Green player
-                </p>
-                <h2 className="mt-1 font-display text-2xl leading-none text-ink">Freppy</h2>
-                <p className="mt-1.5 text-xs leading-relaxed text-muted">
-                  Hidden, not gone. A clover, and cheese. Tap the mint face on the
-                  board — or say /freppy.
-                </p>
-              </div>
-            </div>
-          )}
+          <SeatCard seat={seat} />
           <div className="relative overflow-hidden rounded-[22px] border border-border">
-          <img
-            src="/art/cine-board.jpg"
-            alt=""
-            className="aspect-video w-full object-cover object-[50%_72%]"
-            style={{ filter: `${skin.filter} brightness(1.18)` }}
-          />
-          {PIECES.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              onClick={() => {
-                sfx.click();
-                setPicked(p.id);
-              }}
-              className={cn(
-                "absolute overflow-hidden rounded-full border-2 shadow-lg",
-                p.id === "freppy" ? "size-16 sm:size-[4.75rem]" : "size-12 sm:size-14",
-                picked === p.id
-                  ? p.id === "freppy"
-                    ? "border-mint ring-2 ring-mint/70"
-                    : "border-gold"
-                  : p.id === "freppy"
-                    ? "border-mint/70"
-                    : "border-night/40",
-              )}
-              style={{ left: `${p.x}%`, top: `${p.y}%`, transform: "translate(-50%, -80%)" }}
-            >
-              <img src={p.src} alt={p.id} className="h-full w-full object-cover" />
-            </button>
-          ))}
-          <p className="absolute bottom-3 left-3 font-display text-[10px] tracking-[0.2em] text-gold uppercase">
-            Every roll · every choice · every story
-          </p>
+            <img
+              src="/art/cine-board.jpg"
+              alt=""
+              className="aspect-video w-full object-cover object-[50%_72%]"
+              style={{ filter: `${skin.filter} brightness(1.18)` }}
+            />
+            {PIECES.map((p) => {
+              const piece = seatDef(p.id);
+              const on = picked === p.id;
+              const boosted = piece?.boost;
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => {
+                    sfx.click();
+                    setPicked(p.id);
+                  }}
+                  className={cn(
+                    "absolute overflow-hidden rounded-full border-2 shadow-lg",
+                    boosted ? "size-16 sm:size-[4.75rem]" : "size-12 sm:size-14",
+                    on
+                      ? TONE_RING[piece?.tone ?? "gold"]
+                      : boosted
+                        ? "border-mint/70"
+                        : "border-night/40",
+                  )}
+                  style={{ left: `${p.x}%`, top: `${p.y}%`, transform: "translate(-50%, -80%)" }}
+                >
+                  <img src={piece?.src ?? ""} alt={piece?.name ?? p.id} className="h-full w-full object-cover" />
+                </button>
+              );
+            })}
+            <p className="absolute bottom-3 left-3 font-display text-[10px] tracking-[0.2em] text-gold uppercase">
+              Every roll · every choice · every story
+            </p>
           </div>
         </section>
 
@@ -174,19 +163,24 @@ export function CineBoard() {
               Companions
             </p>
             <ul className="mt-3 space-y-2 text-sm">
-              <li className="flex items-center gap-2 text-mint">
-                <img src="/art/freppy.jpg" alt="" className="size-6 rounded-full object-cover" />
-                Freppy · green player
-              </li>
-              <li className="flex items-center gap-2 text-mint">
-                <img src="/art/steven.jpg" alt="" className="size-6 rounded-full object-cover" />
-                Steven · cheese first
-              </li>
-              <li className="flex items-center gap-2">
-                <Crown className="size-3.5 text-gold" /> Princess · dreams in bloom
-              </li>
-              <li className="flex items-center gap-2 text-muted">Knight · bound by honor</li>
-              <li className="flex items-center gap-2 text-muted">Lint · leftover light</li>
+              {SEATS.map((s) => (
+                <li key={s.id}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      sfx.click();
+                      setPicked(s.id);
+                    }}
+                    className={cn(
+                      "flex w-full items-center gap-2 text-left",
+                      picked === s.id ? TONE_TEXT[s.tone] : "text-muted",
+                    )}
+                  >
+                    <img src={s.src} alt="" className="size-6 rounded-full object-cover" />
+                    {s.name} · {s.role.toLowerCase()}
+                  </button>
+                </li>
+              ))}
             </ul>
           </article>
 
