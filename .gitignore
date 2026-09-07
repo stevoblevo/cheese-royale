@@ -1,0 +1,16 @@
+node_modules
+.vercel
+screenshots
+artifacts
+attachments
+.grok
+AGENTS.md
+AGENTS.project.md
+.node_modules.lock
+.project_id
+*.log
+.env
+.env.local
+.env.*
+!.env.example
+.DS_Store

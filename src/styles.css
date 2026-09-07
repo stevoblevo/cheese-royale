@@ -1,0 +1,294 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cinzel", ui-serif, Georgia, serif;
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+
+  --color-night: #071018;
+  --color-night-2: #0d1824;
+  --color-night-3: #142333;
+  --color-ink: #f3ead8;
+  --color-muted: #9aa6b8;
+  --color-gold: #e8c36a;
+  --color-gold-2: #b8892e;
+  --color-cyan: #4ad4e8;
+  --color-magenta: #f25db8;
+  --color-mint: #4eecc0;
+  --color-rose: #f0b7c8;
+  --color-trap: #c45b6a;
+  --color-wood: #2a1c12;
+  --color-border: rgb(243 234 216 / 0.14);
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+
+  --shadow-glow-gold: 0 0 28px rgb(232 195 106 / 0.28);
+  --shadow-glow-magenta: 0 0 28px rgb(242 93 184 / 0.28);
+}
+
+:root {
+  --nav-h: calc(3.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+    background: var(--color-night);
+    color: var(--color-ink);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-gold) 40%, transparent);
+    color: var(--color-night);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dice-tumble {
+  0% {
+    transform: rotateX(0) rotateY(0);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(280deg);
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.anim-float {
+  animation: float-soft 4.6s ease-in-out infinite;
+}
+
+.anim-pop {
+  animation: pop-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.anim-dice {
+  animation: dice-tumble 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fold-scene {
+  width: min(94vw, 520px);
+  height: min(78vw, 360px);
+  perspective: 900px;
+  display: grid;
+  place-items: center;
+}
+
+@media (min-width: 640px) {
+  .fold-scene {
+    height: min(68vw, 380px);
+  }
+}
+
+.fold-scale {
+  transform: scale(0.92);
+  transform-origin: center center;
+}
+
+@media (min-width: 640px) {
+  .fold-scale {
+    transform: none;
+  }
+}
+
+.fold-room {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  transform-style: preserve-3d;
+  transition: transform 80ms linear;
+}
+
+.fold-face {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(20, 12, 6, 0.45);
+  backface-visibility: hidden;
+  overflow: hidden;
+  box-shadow: inset 0 0 40px rgba(20, 12, 6, 0.35);
+  transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.fold-face[data-face="floor"] {
+  pointer-events: auto;
+  transition-delay: 0ms;
+}
+.fold-face[data-face="back"] {
+  transition-delay: 80ms;
+}
+.fold-face[data-face="left"] {
+  transition-delay: 150ms;
+}
+.fold-face[data-face="right"] {
+  transition-delay: 220ms;
+}
+.fold-face[data-face="front"] {
+  transition-delay: 290ms;
+}
+
+.lint-walk {
+  transition:
+    left 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    top 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cable-draw {
+  stroke-dasharray: 180;
+  stroke-dashoffset: 180;
+  animation: cable-in 640ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes cable-in {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.veil-left,
+.veil-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 58%;
+  background:
+    linear-gradient(90deg, rgb(7 16 24 / 0.25), rgb(7 16 24 / 0.72)),
+    url("/art/cinematic-veil.jpg");
+  background-size: cover;
+  transition:
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 700ms ease;
+}
+
+.veil-open .veil-left {
+  transform: translateX(-110%);
+  opacity: 0;
+}
+
+.veil-open .veil-right {
+  transform: translateX(110%);
+  opacity: 0;
+}
+
+.site-chrome {
+  backdrop-filter: blur(16px);
+}
+
+.site-nav {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.listen-hud {
+  bottom: var(--nav-h);
+}
+
+.pb-nav {
+  padding-bottom: calc(var(--nav-h) + 0.75rem);
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.board-stage {
+  width: min(100%, calc(100dvh - 20rem));
+  aspect-ratio: 1;
+  margin-inline: auto;
+  flex: 0 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .board-stage {
+    width: 100%;
+    max-width: 680px;
+  }
+}
+
+.wink-flash {
+  animation: wink 720ms ease-out;
+}
+
+@keyframes wink {
+  0% {
+    box-shadow: 0 0 0 0 rgb(242 93 184 / 0);
+  }
+  30% {
+    box-shadow: 0 0 48px 8px rgb(242 93 184 / 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(242 93 184 / 0);
+  }
+}
