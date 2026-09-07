@@ -37,6 +37,7 @@ Commands in the game:
 - Part the veil
 - `/bing` pic for pic
 - `/freppy` green player
+- `/knight` shield of the table
 - `/peachfall` Saelion overlay
 - `/gamma` Saedo & SaeDow index (if that build is on the branch you pulled)
 

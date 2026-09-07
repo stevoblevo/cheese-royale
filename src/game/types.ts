@@ -100,6 +100,7 @@ export interface GameState {
   cineOver: boolean;
   cineTheme: CineThemeId;
   cineEvent: number;
+  cinePicked: string;
 }
 
 export interface ListenState {
