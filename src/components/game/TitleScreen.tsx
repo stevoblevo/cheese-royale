@@ -47,7 +47,7 @@ export function TitleScreen() {
   const startTable = useGame((s) => s.startKid);
   const human = useGame((s) => s.human);
   const choose = useGame((s) => s.chooseHero);
-  const { isPending } = useCurrentUserState();
+  const { isPending, user } = useCurrentUserState();
   const living = FRIEND_LIFE[0]!;
   const [open, setOpen] = useState(false);
   const [wink, setWink] = useState(false);
@@ -141,7 +141,7 @@ export function TitleScreen() {
         <div className="flex items-center gap-2">
           {isPending ? (
             <div className="h-7 w-7 animate-pulse rounded-full bg-ink/10" />
-          ) : (
+          ) : user?.isDevFallback ? null : (
             <>
               <SignedOut>
                 <a
