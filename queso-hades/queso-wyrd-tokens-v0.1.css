@@ -1,0 +1,196 @@
+/* ==========================================================================
+   QUESO WYRD TOKENS — v0.1
+   The named design-token layer of Queso Hades Cheese Royale (the wyrd layer).
+
+   Extracted: 2026-11-16
+   Source of truth: the Queso Hades Cheese Royale artifact itself
+     (Muse space slug: queso-hades-cheese-royale), file index.html.
+   Source file:  index.html, 70,869 bytes
+   Source SHA-256: 8b4e04342465194757585a114738e99d0179404ec7365bc02a3c5cdcfd29b485
+
+   This sheet is a SNAPSHOT extracted from the artifact, not a new source.
+   Every value below was copied from the artifact's own CSS and verified
+   against it. If this sheet and the artifact ever disagree, the artifact
+   wins until a new snapshot is cut. Canon and design intent live in the
+   goal workspace: goals/queso-hades-cheese-royale/files/WYRD-PLAN.md.
+
+   Cross-check: WYRD-PLAN §D1's palette matches these tokens exactly for
+   the grounds (#160c20 / #21102f / #2d1839), cheese #ffe28a, gold #ffc74f,
+   ember #ff652f and lava #ff3d1f. One divergence, recorded not resolved:
+   WYRD-PLAN §6 names a "sodium-light cyan" UI accent — no cyan value
+   exists anywhere in the shipped index.html, so this snapshot has none.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CORE TOKENS — the artifact's :root block, values verbatim.
+   -------------------------------------------------------------------------- */
+:root{
+  color-scheme:light dark;
+  --void:#160c20;
+  --deep:#21102f;
+  --panel:#2d1839;
+  --panel-2:#3a1c40;
+  --ink:#fff4ce;
+  --muted:#d4bfcf;
+  --gold:#ffc74f;
+  --cheese:#ffe28a;
+  --ember:#ff652f;
+  --lava:#ff3d1f;
+  --plum:#8e4d9f;
+  --green:#78e36a;
+  --green-deep:#173b22;
+  --pink:#ff83bd;
+  --soil:#3a2118;
+  --line:rgba(255,199,79,.34);
+  --shadow:rgba(6,1,10,.55);
+  --soft:rgba(255,255,255,.06);
+}
+
+/* Dark-scheme overrides — only the tokens the artifact re-declares.
+   (--gold, --cheese, --ember, --lava, --plum, --green, --green-deep,
+   --pink and --soil are NOT overridden; they carry over from :root.) */
+@media(prefers-color-scheme:dark){
+  :root{
+    --void:#09050e;
+    --deep:#12091c;
+    --panel:#1e1028;
+    --panel-2:#2c1533;
+    --ink:#fff3c8;
+    --muted:#cbb6ca;
+    --line:rgba(255,199,79,.27);
+    --shadow:rgba(0,0,0,.72);
+    --soft:rgba(255,255,255,.05);
+  }
+}
+
+/* Defined but currently unused in the artifact (0 var() references):
+   --plum:#8e4d9f, --green-deep:#173b22, --soil:#3a2118.
+   They are part of the layer and are kept here so a future build does
+   not re-invent them at a different value. */
+
+/* --------------------------------------------------------------------------
+   2. TYPOGRAPHY — faces and the type scale, declarations verbatim.
+   Loaded from Google Fonts by the artifact:
+   https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Grenze+Gotisch:wght@700;800&display=swap
+   -------------------------------------------------------------------------- */
+/* Display face (h1, h2, h3, names, numbers):
+   font-family:"Grenze Gotisch",serif;  weights 700;800
+   Body / UI face (body, buttons, copy):
+   font-family:"Archivo",sans-serif;    weights 400;500;600;700;800
+
+   Scale, as declared:
+   h1,h2,h3            line-height:.92
+   h1                  font-size:clamp(4rem,16vw,9.8rem); letter-spacing:-.035em
+   .section-head h2    font-size:clamp(2.9rem,9vw,5.6rem); letter-spacing:-.02em
+   .lede               font-size:clamp(1rem,2.5vw,1.23rem); line-height:1.55
+   .eyebrow            font-size:.78rem; letter-spacing:.16em; weight 800; uppercase
+   .chapter-mark       font-size:.72rem; letter-spacing:.14em; weight 800; uppercase
+   .fighter h3         font-size:2rem
+   .fighter .role      font-size:.72rem; letter-spacing:.12em; weight 800; uppercase
+   .hud-name           font-size:clamp(1.25rem,3vw,2rem); line-height:1
+   .arena-name b       font-size:clamp(2.3rem,8vw,4.8rem); line-height:.9
+   .arena-name span    font-size:.77rem; letter-spacing:.14em; weight 800; uppercase
+   .game-announcer     font-size:clamp(3rem,10vw,7rem); line-height:.83
+   .damage-number      font-size:2rem
+   .timer              font-size:2.4rem
+   .stat b             font-size:1.35rem
+   .descent-map b      font-size:1.08rem
+   footer              font-size:.74rem */
+
+/* --------------------------------------------------------------------------
+   3. LAYOUT & SPACING — the repeated measures.
+   section             padding:74px 20px; scroll-margin-top:76px
+   section ≥980px      padding:100px 32px
+   .inner              max-width:1100px
+   .hero               max-width:1180px; padding:92px 20px 120px
+   Breakpoints         min-width:700px · min-width:980px · max-width:699px
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   4. ATMOSPHERE & EFFECTS — verbatim declarations from the artifact.
+   -------------------------------------------------------------------------- */
+/* Shell ground:
+   background:radial-gradient(circle at 50% 12%,rgba(142,77,159,.26),transparent 30%),linear-gradient(180deg,var(--deep),var(--void) 34%)
+
+   Hatch weave (.shell:before, fixed, z-index:-2):
+   background-image:linear-gradient(30deg,transparent 48%,rgba(255,101,47,.12) 49%,transparent 50%),linear-gradient(150deg,transparent 48%,rgba(255,199,79,.08) 49%,transparent 50%);
+   background-size:68px 68px; opacity:.19
+
+   Breath glows (.shell:after, fixed, z-index:-1):
+   background:radial-gradient(circle at 18% 34%,rgba(255,61,31,.13),transparent 15%),radial-gradient(circle at 80% 66%,rgba(255,199,79,.09),transparent 19%);
+   animation:underworldBreath 10s ease-in-out infinite alternate
+   @keyframes underworldBreath{to{transform:scale(1.08) translate3d(-1.5%,1%,0);opacity:.7}}
+
+   Depth flare (.depth-flare, height:36vh):
+   background:radial-gradient(ellipse at 50% 100%,rgba(255,61,31,.14),transparent 65%);
+   animation:flare 4.5s ease-in-out infinite alternate
+   @keyframes flare{to{opacity:.45;transform:scaleY(.84)}}
+
+   Ember particles (.ember): background:var(--ember); box-shadow:0 0 14px var(--lava);
+   opacity:.65; animation:rise 8s linear infinite
+   sizes: .e1 4px · .e2 6px · .e3 3px · .e4 5px
+   @keyframes rise{from{transform:translateY(110px);opacity:0}25%{opacity:.75}to{transform:translateY(-180px);opacity:0}}
+
+   Display shadow (h1): text-shadow:0 3px 0 #8f321c,0 9px 30px var(--shadow)
+
+   Chisel clip-paths (the wyrd layer's signature cut corners):
+   .journey-nav  polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)
+   .btn          polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)
+   .fighter      polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,0 100%)
+   .chapter-mark polygon(50% 0,100% 50%,50% 100%,0 50%)
+   .round-medallion polygon(10px 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,10px 100%,0 50%)
+   fighter token polygon(50% 0,92% 22%,98% 76%,72% 100%,27% 100%,2% 76%,8% 22%)
+
+   Floating-panel glass:
+   .journey-nav   background:rgba(18,9,28,.88); backdrop-filter:blur(12px); box-shadow:0 14px 44px rgba(0,0,0,.35)
+   .descent-map   background:rgba(18,9,28,.88); backdrop-filter:blur(9px)
+   .stat          background:rgba(18,9,28,.86); border-top:2px solid var(--gold)
+
+   Motion:
+   chapterEnter    .72s cubic-bezier(.2,.75,.25,1)
+   combatantEnter  .72s cubic-bezier(.2,.8,.2,1), staggered .07s per fighter
+   arenaDrift      14s ease-in-out infinite alternate
+   summonTurn      18s linear infinite
+   hover/UI        transition .2s (nav, buttons, fighter cards)
+   fighter .power  transition max-height .28s, opacity .28s, margin .28s
+
+   Focus rings:
+   .btn/.fighter/.arena-tab  outline:3px solid var(--cheese); outline-offset:3px
+   nav & descent-map links   outline:2px solid var(--cheese); outline-offset:-2px
+
+   Reduced motion (@media prefers-reduced-motion:reduce): embers and the
+   depth flare are hidden; all animation and transition are switched off. */
+
+/* --------------------------------------------------------------------------
+   5. COMPONENT LITERALS — hard-coded values the artifact uses OUTSIDE the
+   token block. Recorded so the next snapshot can promote or retire them
+   deliberately instead of rediscovering them.
+   -------------------------------------------------------------------------- */
+/* #2a1023            text on gold — .btn.primary, .arena-tab.active, .sigil
+   rgba(18,9,28,.95)  game picker panel ground
+   #3c2018            Unc fighter-card gradient start (155deg → var(--panel) 54%)
+   #ff9147            Unc role label
+   #4a1d3d            Pinky fighter-card gradient start (155deg → var(--panel) 58%)
+   #ffd4ea            Pinky speech ground — .coach-bubble and .speech
+   #361229            Pinky speech text
+   #9e245d            coach-bubble "PINKY · LIVE" label
+   #a12963            .speech "PINKY" label
+   #7b1f50            .speech button
+   #100711            battle stage ground (.arena-stage.battle-stage)
+   #150912            game shell ground
+   #1a0b16            game field ground
+   linear-gradient(90deg,#54cb60,#d5ee67)   player HP fill (enemy fill is gold→ember tokens)
+   radial-gradient(circle at 35% 28%,#ff9c54,var(--ember) 65%,#7c2119)   attack button
+   radial-gradient(circle at 35% 28%,#d5ef81,#438f4c 70%,#183a20)        dodge button
+   #fff7dc            attack button text
+   #09240e            text on the green controller icon
+   #102515            text on the active roster chip (ground var(--green))
+   #fff4bd            attack-slash core (with var(--gold) edge)
+   rgba(255,226,138,.55)  fighter-token ring border
+   rgba(255,226,138,.35)  joystick ring border
+   rgba(255,199,79,.3)    arena ring border
+   #8e271d            damage-number text-shadow step (0 2px 0)
+   #6e2117            game-announcer text-shadow step (0 3px 0)
+   #8f321c            h1 text-shadow step (0 3px 0) — also in §4 */
+
+/* End of Queso Wyrd Tokens v0.1. */
